@@ -17,11 +17,11 @@
   }
 
   h1 { font-size: 2.5em; color: #ff6f61; text-shadow: 1px 1px #fff; margin-bottom: 15px; }
-  #grid { display: grid; grid-template-columns: repeat(8, 45px); grid-gap: 5px; touch-action: none; margin-bottom: 15px; }
+  #grid { display: grid; grid-template-columns: repeat(7, 50px); grid-gap: 5px; touch-action: none; margin-bottom: 15px; }
   .cell {
-    width: 45px; height: 45px;
+    width: 50px; height: 50px;
     background: white; display: flex; align-items: center; justify-content: center;
-    font-weight: bold; font-size: 1.2em; border-radius: 5px;
+    font-weight: bold; font-size: 1.3em; border-radius: 5px;
     user-select: none; touch-action: none;
   }
   .cell.selected { background-color: #ff6f61; color: white; }
@@ -42,7 +42,7 @@
 <body>
 
 <h1>Κρυπτόλεξο Δώρου 🎁</h1>
-<p>Σέρνεις το δάχτυλο πάνω από τα γράμματα για να βρεις όλες τις λέξεις!</p>
+<p>Σέρνεις το δάχτυλο πάνω από τα γράμματα για να βρεις τις λέξεις!</p>
 <div id="message"></div>
 <div id="grid"></div>
 
@@ -63,22 +63,22 @@ const message = document.getElementById("message");
 const modal = document.getElementById("giftModal");
 const sound = document.getElementById("successSound");
 
+// Απλό 7x6 grid για τις δύο λέξεις
 const letters = [
-  ['Φ','Χ','Ρ','Τ','Σ','Α','Μ','Α'],
-  ['Ο','Υ','Σ','Τ','Α','Λ','Α','Τ'],
-  ['Υ','Λ','Α','Π','Α','Ρ','Τ','Κ'],
-  ['Σ','Π','Α','Π','Ο','Υ','Τ','Σ'],
-  ['Τ','Α','Σ','Α','Φ','Γ','Δ','Η'],
-  ['Α','Μ','Α','Κ','Σ','Δ','Φ','Τ'],
-  ['Τ','Σ','Α','Ν','Τ','Α','Η','Κ'],
-  ['Σ','Ω','Κ','Λ','Ο','Λ','Α','Τ']
+  ['Ε','Υ','Α','Β','Γ','Δ','Η'],
+  ['Μ','Α','Θ','Ε','Ι','Ν','Ζ'],
+  ['Λ','Κ','Σ','Π','Τ','Ω','Ο'],
+  ['Ρ','Σ','Τ','Υ','Φ','Χ','Ψ'],
+  ['Α','Β','Γ','Δ','Ε','Ζ','Η'],
+  ['Θ','Ι','Κ','Λ','Μ','Ν','Ξ']
 ];
 
-const words = ['ΦΟΥΣΤΑ','ΤΣΑΝΤΑ','ΠΑΠΟΥΤΣΙΑ'];
+const words = ['ΕΥ','ΜΑΘΕΙΝ'];
 let foundWords = [];
 let selecting = false;
 let selected = [];
 
+// Δημιουργία grid
 letters.forEach((row,rowIndex)=>{
   row.forEach((letter,colIndex)=>{
     const cell = document.createElement("div");
@@ -134,7 +134,7 @@ function checkWords(){
   // Reset selection
   selected.forEach(c=>{
     const [r,c1] = c.split('-').map(Number);
-    gridElement.children[r*8+c1].classList.remove("selected");
+    gridElement.children[r*7+c1].classList.remove("selected");
   });
   selected = [];
   if(foundWords.length === words.length){
@@ -148,6 +148,7 @@ function checkWords(){
 
 function closeModal(){ modal.style.display="none"; }
 window.onclick = function(e){ if(e.target===modal) modal.style.display="none"; }
+
 </script>
 
 </body>
