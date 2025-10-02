@@ -28,12 +28,8 @@
   #grid { display: grid; grid-template-columns: repeat(7,50px); grid-gap:5px; touch-action:none; margin-top:15px; justify-content: center; }
   .cell { width:50px;height:50px;background:white;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.3em;border-radius:5px;user-select:none;touch-action:none; transition: transform 0.3s, background 0.3s; }
   .cell.selected { background-color:#ff6f61;color:white; }
-  .cell.correct { animation: flash 0.5s alternate 3; }
-  @keyframes flash {
-    0% { background:#ff6f61; color:white; transform: scale(1.1); }
-    50% { background:#f9c74f; color:white; transform: scale(1.2); }
-    100% { background:#90be6d; color:white; transform: scale(1.1); }
-  }
+  .cell.correct { background:#ff6f61; color:white; transform: scale(1.1); }
+  /* Popup */
   #giftModal { display:none; position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);justify-content:center;align-items:center; }
   #giftContent { background:white;padding:20px;border-radius:15px;text-align:center;max-width:400px;width:80%;box-shadow:0 5px 15px rgba(0,0,0,0.5); }
   #giftContent img { width:100%;border-radius:10px; }
@@ -108,12 +104,12 @@ function checkQuiz() {
 const gridElement = document.getElementById("grid");
 const letters = [
   ['Ε','Α','Λ','Ρ','Σ','Δ','Η'],
-  ['Λ','Υ','Θ','Π','Τ','Ω','Ο'],
-  ['Σ','Κ','Μ','Α','Φ','Χ','Ψ'],
-  ['Π','Τ','Η','Θ','Ε','Ζ','Β'],
-  ['Ω','Μ','Λ','Α','Ι','Ν','Κ'],
-  ['Ρ','Α','Γ','Δ','Φ','Σ','Ξ'],
-  ['Σ','Θ','Υ','Κ','Λ','Μ','Ν']
+  ['Λ','Υ','Θ','Π','Τ','Ω','Μ'],
+  ['Σ','Κ','Ζ','Α','Φ','Α','Ψ'],
+  ['Π','Τ','Η','Θ','Θ','Ζ','Β'],
+  ['Ω','Μ','Λ','Ε','Ι','Ν','Κ'],
+  ['Ρ','Α','Ι','Δ','Φ','Σ','Ξ'],
+  ['Σ','Ν','Υ','Κ','Λ','Μ','Ν']
 ];
 const words = ['ΕΥ','ΜΑΘΕΙΝ'];
 let foundWords = [];
@@ -152,14 +148,23 @@ gridElement.addEventListener("touchend", e=>{
 });
 
 function checkWords(){
-  const selectedLetters = selected.map(c=>{ const [r,c1]=c.split('-').map(Number); return letters[r][c1]; }).join('');
+  const selectedLetters = selected.map(c=>{
+    const [r,c1]=c.split('-').map(Number);
+    return letters[r][c1];
+  }).join('');
+
   words.forEach(word=>{
     if(selectedLetters.includes(word) && !foundWords.includes(word)){
       foundWords.push(word);
-      highlightWord(selected); // animation
+      highlightWord(selected); // μόνιμο χρώμα
     }
   });
-  selected.forEach(c=>{ const [r,c1]=c.split('-').map(Number); gridElement.children[r*7+c1].classList.remove("selected"); });
+
+  selected.forEach(c=>{
+    const [r,c1]=c.split('-').map(Number);
+    gridElement.children[r*7+c1].classList.remove("selected");
+  });
+
   selected=[];
   document.getElementById("message").textContent=`Έχεις βρει ${foundWords.length} από ${words.length} λέξεις`;
   checkCompletion();
@@ -169,8 +174,7 @@ function highlightWord(coords){
   coords.forEach(c=>{
     const [r,c1]=c.split('-').map(Number);
     const cell=gridElement.children[r*7+c1];
-    cell.classList.add("correct");
-    setTimeout(()=>{cell.classList.remove("correct");},1500);
+    cell.classList.add("correct"); // παραμένει μόνιμα
   });
 }
 
