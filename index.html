@@ -55,20 +55,57 @@
       background-color: #e05550;
     }
 
-    #giftCard {
-      display: none;
-      margin-top: 20px;
-      width: 300px;
-      border: 5px solid #ff6f61;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    }
-
     #message {
       font-size: 1.5em;
       color: #2a9d8f;
       margin-top: 20px;
       font-weight: bold;
+    }
+
+    /* Popup modal */
+    #giftModal {
+      display: none; /* hidden by default */
+      position: fixed; 
+      z-index: 1000; 
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto; 
+      background-color: rgba(0,0,0,0.7); 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #giftContent {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      max-width: 400px;
+      width: 80%;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    }
+
+    #giftContent img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    #closeBtn {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #ff6f61;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+
+    #closeBtn:hover {
+      background-color: #e05550;
     }
   </style>
 </head>
@@ -103,7 +140,16 @@
   </form>
 
   <div id="message"></div>
-  <img id="giftCard" src="https://i.imgur.com/4dXcZ7R.png" alt="Δωροεπιταγή 🎁">
+
+  <!-- Modal -->
+  <div id="giftModal">
+    <div id="giftContent">
+      <h2>🎉 Συγχαρητήρια! 🎉</h2>
+      <p>Κέρδισες την δωροεπιταγή! 🛍️</p>
+      <img src="https://i.imgur.com/4dXcZ7R.png" alt="Δωροεπιταγή 🎁">
+      <button id="closeBtn" onclick="closeModal()">Κλείσιμο</button>
+    </div>
+  </div>
 
   <script>
     function checkAnswers() {
@@ -111,7 +157,7 @@
       const q2 = document.querySelector('input[name="q2"]:checked');
       const q3 = document.querySelector('input[name="q3"]:checked');
       const message = document.getElementById("message");
-      const giftCard = document.getElementById("giftCard");
+      const modal = document.getElementById("giftModal");
 
       if (!q1 || !q2 || !q3) {
         alert("Συμπλήρωσε όλες τις απαντήσεις!");
@@ -119,11 +165,23 @@
       }
 
       if (q1.value === "σωστό" && q2.value === "σωστό" && q3.value === "σωστό") {
-        message.textContent = "🎉 Συγχαρητήρια! Κέρδισες την δωροεπιταγή! 🎁";
-        giftCard.style.display = "block";
+        // Εμφάνιση popup
+        modal.style.display = "flex";
+        message.textContent = "";
       } else {
         message.textContent = "😢 Κάποιες απαντήσεις είναι λάθος. Δοκίμασε ξανά!";
-        giftCard.style.display = "none";
+      }
+    }
+
+    function closeModal() {
+      document.getElementById("giftModal").style.display = "none";
+    }
+
+    // Κλείνει το modal αν κάνουμε κλικ έξω από το περιεχόμενο
+    window.onclick = function(event) {
+      const modal = document.getElementById("giftModal");
+      if (event.target === modal) {
+        modal.style.display = "none";
       }
     }
   </script>
