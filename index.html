@@ -1,216 +1,154 @@
 <!DOCTYPE html>
 <html lang="el">
 <head>
-  <meta charset="UTF-8">
-  <title>Κρυπτόλεξο Δώρου 🎁</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #f6d365, #fda085);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
-      margin: 0;
-      padding: 30px;
-      text-align: center;
-    }
+<meta charset="UTF-8">
+<title>Κρυπτόλεξο Δώρου 🎁</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f6d365, #fda085);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    margin: 0;
+    text-align: center;
+  }
 
-    h1 {
-      font-size: 3em;
-      color: #ff6f61;
-      text-shadow: 2px 2px #fff;
-      margin-bottom: 20px;
-    }
+  h1 { font-size: 2.5em; color: #ff6f61; text-shadow: 1px 1px #fff; margin-bottom: 15px; }
+  #grid { display: grid; grid-template-columns: repeat(8, 45px); grid-gap: 5px; touch-action: none; margin-bottom: 15px; }
+  .cell {
+    width: 45px; height: 45px;
+    background: white; display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 1.2em; border-radius: 5px;
+    user-select: none; touch-action: none;
+  }
+  .cell.selected { background-color: #ff6f61; color: white; }
+  #message { font-size: 1.2em; color: #2a9d8f; margin-bottom: 10px; }
 
-    #grid {
-      display: grid;
-      grid-template-columns: repeat(8, 40px);
-      grid-template-rows: repeat(8, 40px);
-      gap: 5px;
-      margin-bottom: 20px;
-    }
-
-    .cell {
-      width: 40px;
-      height: 40px;
-      background-color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 1.2em;
-      cursor: pointer;
-      border-radius: 5px;
-      user-select: none;
-    }
-
-    .cell.selected {
-      background-color: #ff6f61;
-      color: white;
-    }
-
-    #message {
-      font-size: 1.3em;
-      font-weight: bold;
-      color: #2a9d8f;
-      margin-bottom: 15px;
-    }
-
-    /* Popup modal */
-    #giftModal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.7);
-      justify-content: center;
-      align-items: center;
-      display: flex;
-    }
-
-    #giftContent {
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 15px;
-      max-width: 400px;
-      width: 80%;
-      text-align: center;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    }
-
-    #giftContent img {
-      width: 100%;
-      border-radius: 10px;
-    }
-
-    #closeBtn {
-      margin-top: 15px;
-      padding: 10px 20px;
-      background-color: #ff6f61;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 1em;
-    }
-
-    #closeBtn:hover {
-      background-color: #e05550;
-    }
-  </style>
+  #giftModal {
+    display: none; position: fixed; top:0; left:0; width:100%; height:100%;
+    background-color: rgba(0,0,0,0.7); justify-content:center; align-items:center;
+  }
+  #giftContent {
+    background:white; padding:20px; border-radius:15px; text-align:center; max-width:400px; width:80%;
+  }
+  #giftContent img { width:100%; border-radius:10px; }
+  #closeBtn { margin-top:15px; padding:10px 20px; background:#ff6f61; color:white; border:none; border-radius:10px; cursor:pointer; }
+  #closeBtn:hover { background:#e05550; }
+</style>
 </head>
 <body>
 
-  <h1>Κρυπτόλεξο Δώρου 🎁</h1>
-  <p>Βρες όλες τις λέξεις για να δεις την έκπληξη!</p>
-  <div id="message"></div>
-  <div id="grid"></div>
+<h1>Κρυπτόλεξο Δώρου 🎁</h1>
+<p>Σέρνεις το δάχτυλο πάνω από τα γράμματα για να βρεις όλες τις λέξεις!</p>
+<div id="message"></div>
+<div id="grid"></div>
 
-  <!-- Popup Modal -->
-  <div id="giftModal">
-    <div id="giftContent">
-      <h2>🎉 Συγχαρητήρια! 🎉</h2>
-      <p>Κέρδισες την δωροεπιταγή! 🛍️</p>
-      <img src="giftcard.jpg" alt="Δωροεπιταγή 🎁">
-      <button id="closeBtn" onclick="closeModal()">Κλείσιμο</button>
-    </div>
+<div id="giftModal">
+  <div id="giftContent">
+    <h2>🎉 Συγχαρητήρια! 🎉</h2>
+    <p>Κέρδισες την δωροεπιταγή! 🛍️</p>
+    <img src="giftcard.jpg" alt="Δωροεπιταγή 🎁">
+    <button id="closeBtn" onclick="closeModal()">Κλείσιμο</button>
   </div>
+</div>
 
-  <audio id="successSound" src="success.mp3" preload="auto"></audio>
+<audio id="successSound" src="success.mp3" preload="auto"></audio>
 
-  <script>
-    const gridElement = document.getElementById("grid");
-    const message = document.getElementById("message");
-    const modal = document.getElementById("giftModal");
-    const sound = document.getElementById("successSound");
+<script>
+const gridElement = document.getElementById("grid");
+const message = document.getElementById("message");
+const modal = document.getElementById("giftModal");
+const sound = document.getElementById("successSound");
 
-    // Grid 8x8
-    const letters = [
-      ['Φ','Χ','Ρ','Τ','Σ','Α','Μ','Α'],
-      ['Ο','Υ','Σ','Τ','Α','Λ','Α','Τ'],
-      ['Υ','Λ','Α','Π','Α','Ρ','Τ','Κ'],
-      ['Σ','Π','Α','Π','Ο','Υ','Τ','Σ'],
-      ['Τ','Α','Σ','Α','Φ','Γ','Δ','Η'],
-      ['Α','Μ','Α','Κ','Σ','Δ','Φ','Τ'],
-      ['Τ','Σ','Α','Ν','Τ','Α','Η','Κ'],
-      ['Σ','Ω','Κ','Λ','Ο','Λ','Α','Τ']
-    ];
+const letters = [
+  ['Φ','Χ','Ρ','Τ','Σ','Α','Μ','Α'],
+  ['Ο','Υ','Σ','Τ','Α','Λ','Α','Τ'],
+  ['Υ','Λ','Α','Π','Α','Ρ','Τ','Κ'],
+  ['Σ','Π','Α','Π','Ο','Υ','Τ','Σ'],
+  ['Τ','Α','Σ','Α','Φ','Γ','Δ','Η'],
+  ['Α','Μ','Α','Κ','Σ','Δ','Φ','Τ'],
+  ['Τ','Σ','Α','Ν','Τ','Α','Η','Κ'],
+  ['Σ','Ω','Κ','Λ','Ο','Λ','Α','Τ']
+];
 
-    const words = ['ΦΟΥΣΤΑ','ΤΣΑΝΤΑ','ΠΑΠΟΥΤΣΙΑ']; // Λέξεις που πρέπει να βρει
-    let foundWords = [];
+const words = ['ΦΟΥΣΤΑ','ΤΣΑΝΤΑ','ΠΑΠΟΥΤΣΙΑ'];
+let foundWords = [];
+let selecting = false;
+let selected = [];
 
-    // Δημιουργία grid
-    letters.forEach((row, rowIndex) => {
-      row.forEach((letter, colIndex) => {
-        const cell = document.createElement("div");
-        cell.classList.add("cell");
-        cell.dataset.letter = letter;
-        cell.dataset.row = rowIndex;
-        cell.dataset.col = colIndex;
-        cell.textContent = letter;
-        gridElement.appendChild(cell);
-      });
-    });
+letters.forEach((row,rowIndex)=>{
+  row.forEach((letter,colIndex)=>{
+    const cell = document.createElement("div");
+    cell.classList.add("cell");
+    cell.dataset.letter = letter;
+    cell.dataset.row = rowIndex;
+    cell.dataset.col = colIndex;
+    cell.textContent = letter;
+    gridElement.appendChild(cell);
+  });
+});
 
-    let selected = [];
+function getCellFromTouch(touch){
+  const x = touch.clientX, y = touch.clientY;
+  return document.elementFromPoint(x,y);
+}
 
-    gridElement.addEventListener("click", e => {
-      if(e.target.classList.contains("cell")){
-        e.target.classList.toggle("selected");
-        const coords = `${e.target.dataset.row}-${e.target.dataset.col}`;
-        if(selected.includes(coords)){
-          selected = selected.filter(c => c !== coords);
-        } else {
-          selected.push(coords);
-        }
-      }
-    });
+gridElement.addEventListener("touchstart", e=>{
+  selecting = true;
+  const cell = getCellFromTouch(e.touches[0]);
+  if(cell && cell.classList.contains("cell")){
+    cell.classList.add("selected");
+    const coord = `${cell.dataset.row}-${cell.dataset.col}`;
+    if(!selected.includes(coord)) selected.push(coord);
+  }
+});
 
-    function checkWords(){
-      const selectedLetters = selected.map(coord => {
-        const [row,col] = coord.split('-').map(Number);
-        return letters[row][col];
-      }).join('');
-      // Έλεγχος αν υπάρχει σωστή λέξη μέσα στην επιλογή
-      words.forEach(word=>{
-        if(selectedLetters.includes(word) && !foundWords.includes(word)){
-          foundWords.push(word);
-        }
-      });
-      selected.forEach(coord=>{
-        const [row,col] = coord.split('-').map(Number);
-        gridElement.children[row*8+col].classList.remove("selected");
-      });
-      selected = [];
+gridElement.addEventListener("touchmove", e=>{
+  if(!selecting) return;
+  const cell = getCellFromTouch(e.touches[0]);
+  if(cell && cell.classList.contains("cell")){
+    cell.classList.add("selected");
+    const coord = `${cell.dataset.row}-${cell.dataset.col}`;
+    if(!selected.includes(coord)) selected.push(coord);
+  }
+});
 
-      if(foundWords.length === words.length){
-        message.textContent = "";
-        sound.play();
-        modal.style.display = "flex";
-      } else {
-        message.textContent = `Έχεις βρει ${foundWords.length} από ${words.length} λέξεις`;
-      }
+gridElement.addEventListener("touchend", e=>{
+  selecting = false;
+  checkWords();
+});
+
+function checkWords(){
+  const selectedLetters = selected.map(c=>{
+    const [r,c1] = c.split('-').map(Number);
+    return letters[r][c1];
+  }).join('');
+  words.forEach(word=>{
+    if(selectedLetters.includes(word) && !foundWords.includes(word)){
+      foundWords.push(word);
     }
+  });
+  // Reset selection
+  selected.forEach(c=>{
+    const [r,c1] = c.split('-').map(Number);
+    gridElement.children[r*8+c1].classList.remove("selected");
+  });
+  selected = [];
+  if(foundWords.length === words.length){
+    message.textContent = "";
+    sound.play();
+    modal.style.display = "flex";
+  } else {
+    message.textContent = `Έχεις βρει ${foundWords.length} από ${words.length} λέξεις`;
+  }
+}
 
-    // Έλεγχος κάθε 1 δευτερόλεπτο
-    setInterval(checkWords,1000);
-
-    function closeModal() {
-      modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-      if(event.target === modal){
-        modal.style.display = "none";
-      }
-    }
-  </script>
+function closeModal(){ modal.style.display="none"; }
+window.onclick = function(e){ if(e.target===modal) modal.style.display="none"; }
+</script>
 
 </body>
 </html>
