@@ -2,7 +2,7 @@
 <html lang="el">
 <head>
 <meta charset="UTF-8">
-<title>Κρυπτόλεξο Δώρου 🎁</title>
+<title>Quiz + Κρυπτόλεξο Δώρου 🎁</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 <style>
   body {
@@ -15,36 +15,60 @@
     margin: 0;
     text-align: center;
   }
-
   h1 { font-size: 2.5em; color: #ff6f61; text-shadow: 1px 1px #fff; margin-bottom: 15px; }
-  #grid { display: grid; grid-template-columns: repeat(7, 50px); grid-gap: 5px; touch-action: none; margin-bottom: 15px; }
-  .cell {
-    width: 50px; height: 50px;
-    background: white; display: flex; align-items: center; justify-content: center;
-    font-weight: bold; font-size: 1.3em; border-radius: 5px;
-    user-select: none; touch-action: none;
+  form, #grid-container {
+    background: rgba(255,255,255,0.9); padding: 20px 40px; border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3); margin-bottom: 20px;
+    max-width: 500px; width: 100%;
   }
-  .cell.selected { background-color: #ff6f61; color: white; }
-  #message { font-size: 1.2em; color: #2a9d8f; margin-bottom: 10px; }
-
-  #giftModal {
-    display: none; position: fixed; top:0; left:0; width:100%; height:100%;
-    background-color: rgba(0,0,0,0.7); justify-content:center; align-items:center;
-  }
-  #giftContent {
-    background:white; padding:20px; border-radius:15px; text-align:center; max-width:400px; width:80%;
-  }
-  #giftContent img { width:100%; border-radius:10px; }
-  #closeBtn { margin-top:15px; padding:10px 20px; background:#ff6f61; color:white; border:none; border-radius:10px; cursor:pointer; }
+  .question { margin-bottom: 20px; text-align: left; font-size: 1.2em; }
+  button { background-color: #ff6f61; color: white; border: none; padding: 10px 20px; font-size: 1.2em; border-radius: 10px; cursor: pointer; transition: background 0.3s; }
+  button:hover { background-color: #e05550; }
+  #message { font-size: 1.3em; color: #2a9d8f; margin-bottom: 10px; font-weight: bold; }
+  #grid { display: grid; grid-template-columns: repeat(7,50px); grid-gap:5px; touch-action:none; margin-top:15px; justify-content: center; }
+  .cell { width:50px;height:50px;background:white;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.3em;border-radius:5px;user-select:none;touch-action:none; }
+  .cell.selected { background-color:#ff6f61;color:white; }
+  /* Popup */
+  #giftModal { display:none; position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);justify-content:center;align-items:center; }
+  #giftContent { background:white;padding:20px;border-radius:15px;text-align:center;max-width:400px;width:80%;box-shadow:0 5px 15px rgba(0,0,0,0.5); }
+  #giftContent img { width:100%;border-radius:10px; }
+  #closeBtn { margin-top:15px;padding:10px 20px;background:#ff6f61;color:white;border:none;border-radius:10px;cursor:pointer; }
   #closeBtn:hover { background:#e05550; }
 </style>
 </head>
 <body>
 
-<h1>Κρυπτόλεξο Δώρου 🎁</h1>
-<p>Σέρνεις το δάχτυλο πάνω από τα γράμματα για να βρεις τις λέξεις!</p>
+<h1>🎉 Quiz + Κρυπτόλεξο 🎉</h1>
+<p>Απάντησε σωστά και βρες όλες τις λέξεις για να δεις την έκπληξη!</p>
+
+<form id="quizForm">
+  <div class="question">
+    <p>1️⃣ Τι χρώμα έχει το ουράνιο τόξο;</p>
+    <input type="radio" name="q1" value="σωστό"> Πολύχρωμο<br>
+    <input type="radio" name="q1" value="λάθος"> Μαύρο<br>
+    <input type="radio" name="q1" value="λάθος"> Μπλε μόνο<br>
+  </div>
+  <div class="question">
+    <p>2️⃣ Πόσες ημέρες έχει ο Οκτώβριος;</p>
+    <input type="radio" name="q2" value="λάθος"> 30<br>
+    <input type="radio" name="q2" value="σωστό"> 31<br>
+    <input type="radio" name="q2" value="λάθος"> 28<br>
+  </div>
+  <div class="question">
+    <p>3️⃣ Ποιο ζώο είναι το πιο γρήγορο στη στεριά;</p>
+    <input type="radio" name="q3" value="λάθος"> Λιοντάρι<br>
+    <input type="radio" name="q3" value="σωστό"> Τσιτάχ<br>
+    <input type="radio" name="q3" value="λάθος"> Ελέφαντας<br>
+  </div>
+  <button type="button" onclick="checkQuiz()">Υποβολή ✅</button>
+</form>
+
 <div id="message"></div>
-<div id="grid"></div>
+
+<div id="grid-container">
+  <p>Βρες τις διαγώνιες λέξεις:</p>
+  <div id="grid"></div>
+</div>
 
 <div id="giftModal">
   <div id="giftContent">
@@ -58,27 +82,39 @@
 <audio id="successSound" src="success.mp3" preload="auto"></audio>
 
 <script>
+// Quiz
+let quizPassed = false;
+function checkQuiz() {
+  const q1 = document.querySelector('input[name="q1"]:checked');
+  const q2 = document.querySelector('input[name="q2"]:checked');
+  const q3 = document.querySelector('input[name="q3"]:checked');
+  const msg = document.getElementById("message");
+  if(!q1 || !q2 || !q3){ alert("Συμπλήρωσε όλες τις απαντήσεις!"); return; }
+  if(q1.value==="σωστό" && q2.value==="σωστό" && q3.value==="σωστό"){
+    quizPassed = true;
+    msg.textContent="✅ Έχεις περάσει το Quiz! Τώρα βρες τις λέξεις στο κρυπτόλεξο.";
+    checkCompletion();
+  } else {
+    msg.textContent="😢 Κάποιες απαντήσεις είναι λάθος. Δοκίμασε ξανά!";
+  }
+}
+
+// Κρυπτόλεξο
 const gridElement = document.getElementById("grid");
-const message = document.getElementById("message");
-const modal = document.getElementById("giftModal");
-const sound = document.getElementById("successSound");
-
-// Απλό 7x6 grid για τις δύο λέξεις
 const letters = [
-  ['Ε','Υ','Α','Β','Γ','Δ','Η'],
-  ['Μ','Α','Θ','Ε','Ι','Ν','Ζ'],
-  ['Λ','Κ','Σ','Π','Τ','Ω','Ο'],
-  ['Ρ','Σ','Τ','Υ','Φ','Χ','Ψ'],
-  ['Α','Β','Γ','Δ','Ε','Ζ','Η'],
-  ['Θ','Ι','Κ','Λ','Μ','Ν','Ξ']
+  ['Ε','Α','Λ','Ρ','Σ','Δ','Η'],
+  ['Λ','Υ','Θ','Π','Τ','Ω','Ο'],
+  ['Σ','Κ','Μ','Α','Φ','Χ','Ψ'],
+  ['Π','Τ','Η','Θ','Ε','Ζ','Β'],
+  ['Ω','Μ','Λ','Α','Ι','Ν','Κ'],
+  ['Ρ','Α','Γ','Δ','Φ','Σ','Ξ'],
+  ['Σ','Θ','Υ','Κ','Λ','Μ','Ν']
 ];
-
 const words = ['ΕΥ','ΜΑΘΕΙΝ'];
 let foundWords = [];
 let selecting = false;
 let selected = [];
 
-// Δημιουργία grid
 letters.forEach((row,rowIndex)=>{
   row.forEach((letter,colIndex)=>{
     const cell = document.createElement("div");
@@ -97,58 +133,41 @@ function getCellFromTouch(touch){
 }
 
 gridElement.addEventListener("touchstart", e=>{
-  selecting = true;
+  selecting=true;
   const cell = getCellFromTouch(e.touches[0]);
-  if(cell && cell.classList.contains("cell")){
-    cell.classList.add("selected");
-    const coord = `${cell.dataset.row}-${cell.dataset.col}`;
-    if(!selected.includes(coord)) selected.push(coord);
-  }
+  if(cell && cell.classList.contains("cell")){ cell.classList.add("selected"); const coord=`${cell.dataset.row}-${cell.dataset.col}`; if(!selected.includes(coord)) selected.push(coord); }
 });
-
 gridElement.addEventListener("touchmove", e=>{
   if(!selecting) return;
   const cell = getCellFromTouch(e.touches[0]);
-  if(cell && cell.classList.contains("cell")){
-    cell.classList.add("selected");
-    const coord = `${cell.dataset.row}-${cell.dataset.col}`;
-    if(!selected.includes(coord)) selected.push(coord);
-  }
+  if(cell && cell.classList.contains("cell")){ cell.classList.add("selected"); const coord=`${cell.dataset.row}-${cell.dataset.col}`; if(!selected.includes(coord)) selected.push(coord); }
 });
-
 gridElement.addEventListener("touchend", e=>{
-  selecting = false;
-  checkWords();
+  selecting=false; checkWords();
 });
 
 function checkWords(){
-  const selectedLetters = selected.map(c=>{
-    const [r,c1] = c.split('-').map(Number);
-    return letters[r][c1];
-  }).join('');
-  words.forEach(word=>{
-    if(selectedLetters.includes(word) && !foundWords.includes(word)){
-      foundWords.push(word);
-    }
-  });
-  // Reset selection
-  selected.forEach(c=>{
-    const [r,c1] = c.split('-').map(Number);
-    gridElement.children[r*7+c1].classList.remove("selected");
-  });
-  selected = [];
-  if(foundWords.length === words.length){
-    message.textContent = "";
+  const selectedLetters = selected.map(c=>{ const [r,c1]=c.split('-').map(Number); return letters[r][c1]; }).join('');
+  words.forEach(word=>{ if(selectedLetters.includes(word) && !foundWords.includes(word)) foundWords.push(word); });
+  selected.forEach(c=>{ const [r,c1]=c.split('-').map(Number); gridElement.children[r*7+c1].classList.remove("selected"); });
+  selected=[];
+  document.getElementById("message").textContent=`Έχεις βρει ${foundWords.length} από ${words.length} λέξεις`;
+  checkCompletion();
+}
+
+// Έλεγχος ολοκλήρωσης και Quiz + Κρυπτόλεξο
+function checkCompletion(){
+  if(quizPassed && foundWords.length===words.length){
+    const modal = document.getElementById("giftModal");
+    const sound = document.getElementById("successSound");
+    document.getElementById("message").textContent="";
     sound.play();
-    modal.style.display = "flex";
-  } else {
-    message.textContent = `Έχεις βρει ${foundWords.length} από ${words.length} λέξεις`;
+    modal.style.display="flex";
   }
 }
 
-function closeModal(){ modal.style.display="none"; }
-window.onclick = function(e){ if(e.target===modal) modal.style.display="none"; }
-
+function closeModal(){ document.getElementById("giftModal").style.display="none"; }
+window.onclick = function(e){ if(e.target===document.getElementById("giftModal")) document.getElementById("giftModal").style.display="none"; }
 </script>
 
 </body>
