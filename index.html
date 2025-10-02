@@ -10,11 +10,15 @@
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #f6d365, #fda085);
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            /* Οριζόντιο κεντράρισμα */
             align-items: center;
-            padding: 20px;
+            /* Κάθετο κεντράρισμα */
+            height: 100vh;
+            /* Πλήρες ύψος οθόνης */
             margin: 0;
             text-align: center;
+            padding: 20px;
         }
 
         /* Κοινά στυλ */
@@ -166,25 +170,25 @@
 
 <body>
 
-<!-- Αρχική Σελίδα -->
-<section id="introSection">
-    <h1>🎉 Καλώς ήρθες! 🎉</h1>
-    <p>
-        Καλώς ήρθες σε αυτή τη μικρή <span style="color:#ff6f61; font-weight:bold;">έκπληξη</span>!  
-        <br><br>
-        Λογικά αυτή τη στιγμή – αν όλα πήγαν καλά – 
-        <strong>κρατάς στα χέρια σου ένα κουτάκι</strong>. 🎁  
-        <br><br>
-        Για να βρεις τον <span style="color:#2a9d8f; font-weight:bold;">μυστικό κωδικό</span>  
-        θα πρέπει να μας αποδείξεις <em>πόσα γνωρίζουν οι άνθρωποι στα 39!!!</em> 🧠  
-        <br><br>
-        <span style="font-weight:bold; color:#ff6f61;">Τώρα είναι η ευκαιρία σου...</span>
-    </p>
-    <p style="margin-top:15px; font-size:1.2em;">
-        Είσαι έτοιμη να ξεκινήσεις; 🎁
-    </p>
-    <button onclick="startQuiz()">Ξεκίνα ✅</button>
-</section>
+    <!-- Αρχική Σελίδα -->
+    <section id="introSection">
+        <h1>🎉 Καλώς ήρθες! 🎉</h1>
+        <p>
+            Καλώς ήρθες σε αυτή τη μικρή <span style="color:#ff6f61; font-weight:bold;">έκπληξη</span>!
+            <br><br>
+            Λογικά αυτή τη στιγμή – αν όλα πήγαν καλά –
+            <strong>κρατάς στα χέρια σου ένα κουτάκι</strong>. 🎁
+            <br><br>
+            Για να βρεις τον <span style="color:#2a9d8f; font-weight:bold;">μυστικό κωδικό</span>
+            θα πρέπει να μας αποδείξεις <em>πόσα γνωρίζουν οι άνθρωποι στα 39!!!</em> 🧠
+            <br><br>
+            <span style="font-weight:bold; color:#ff6f61;">Τώρα είναι η ευκαιρία σου...</span>
+        </p>
+        <p style="margin-top:15px; font-size:1.2em;">
+            Είσαι έτοιμη να ξεκινήσεις; 🎁
+        </p>
+        <button onclick="startQuiz()">Ξεκίνα ✅</button>
+    </section>
 
     <!-- Quiz Section -->
     <section id="quizSection">
@@ -228,14 +232,14 @@
         </div>
     </div>
 
-<!-- Gift Popup -->
-<div id="giftModal">
-    <div id="giftContent">
-        <h2>🎉 Συγχαρητήρια! 🎉</h2>
-        <p>Τα κατάφερες, ο μυστικός κωδικός είναι : <strong>3939</strong> 🔑</p>
-        <button id="closeBtn" onclick="closeModal()">Κλείσιμο</button>
+    <!-- Gift Popup -->
+    <div id="giftModal">
+        <div id="giftContent">
+            <h2>🎉 Συγχαρητήρια! 🎉</h2>
+            <p>Τα κατάφερες, ο μυστικός κωδικός είναι : <strong>3939</strong> 🔑</p>
+            <button id="closeBtn" onclick="closeModal()">Κλείσιμο</button>
+        </div>
     </div>
-</div>
 
 
     <audio id="successSound" src="success.mp3" preload="auto"></audio>
