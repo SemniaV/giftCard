@@ -2,35 +2,32 @@
 <html lang="el">
 <head>
   <meta charset="UTF-8">
-  <title>Quiz Δώρου 🎁</title>
-
-  <!-- Google Font -->
+  <title>Word Scramble Δώρου 🎁</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-
   <style>
     body {
-      background: linear-gradient(135deg, #f6d365, #fda085);
       font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f6d365, #fda085);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding: 30px;
       min-height: 100vh;
       margin: 0;
+      padding: 30px;
       text-align: center;
     }
 
     h1 {
-      color: #ff6f61;
       font-size: 3em;
-      margin-bottom: 10px;
+      color: #ff6f61;
       text-shadow: 2px 2px #fff;
+      margin-bottom: 20px;
     }
 
-    form {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 20px 40px;
+    #scrambleGame {
+      background: rgba(255,255,255,0.9);
+      padding: 20px 30px;
       border-radius: 15px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.3);
       max-width: 500px;
@@ -38,18 +35,22 @@
       margin-bottom: 20px;
     }
 
-    div.question {
-      margin-bottom: 20px;
-      text-align: left;
+    input[type="text"] {
       font-size: 1.2em;
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: 2px solid #ff6f61;
+      width: 200px;
+      text-align: center;
+      margin-right: 10px;
     }
 
     button {
       background-color: #ff6f61;
       color: white;
       border: none;
-      padding: 10px 20px;
-      font-size: 1.2em;
+      padding: 8px 15px;
+      font-size: 1.1em;
       border-radius: 10px;
       cursor: pointer;
       transition: background 0.3s;
@@ -60,34 +61,34 @@
     }
 
     #message {
-      font-size: 1.5em;
-      color: #2a9d8f;
-      margin-top: 20px;
+      margin-top: 15px;
+      font-size: 1.3em;
       font-weight: bold;
+      color: #2a9d8f;
     }
 
     /* Popup modal */
     #giftModal {
-      display: none; /* Κρυφό από την αρχή */
-      position: fixed; 
-      z-index: 1000; 
+      display: none;
+      position: fixed;
+      z-index: 1000;
       left: 0;
       top: 0;
       width: 100%;
       height: 100%;
-      overflow: auto; 
-      background-color: rgba(0,0,0,0.7); 
+      background-color: rgba(0,0,0,0.7);
       justify-content: center;
       align-items: center;
+      display: flex;
     }
 
     #giftContent {
       background-color: #fff;
       padding: 20px;
       border-radius: 15px;
-      text-align: center;
       max-width: 400px;
       width: 80%;
+      text-align: center;
       box-shadow: 0 5px 15px rgba(0,0,0,0.5);
     }
 
@@ -114,72 +115,43 @@
 </head>
 <body>
 
-  <h1>🎉 Quiz Δώρου 🎉</h1>
-  <p>Απάντησε σωστά όλες τις ερωτήσεις για να δεις την έκπληξη!</p>
+  <h1>Word Scramble Δώρου 🎁</h1>
 
-  <form id="quizForm">
-    <div class="question">
-      <p>1️⃣ Τι χρώμα έχει το ουράνιο τόξο;</p>
-      <input type="radio" name="q1" value="σωστό"> Πολύχρωμο<br>
-      <input type="radio" name="q1" value="λάθος"> Μαύρο<br>
-      <input type="radio" name="q1" value="λάθος"> Μπλε μόνο<br>
-    </div>
-
-    <div class="question">
-      <p>2️⃣ Πόσες ημέρες έχει ο Οκτώβριος;</p>
-      <input type="radio" name="q2" value="λάθος"> 30<br>
-      <input type="radio" name="q2" value="σωστό"> 31<br>
-      <input type="radio" name="q2" value="λάθος"> 28<br>
-    </div>
-
-    <div class="question">
-      <p>3️⃣ Ποιο ζώο είναι το πιο γρήγορο στη στεριά;</p>
-      <input type="radio" name="q3" value="λάθος"> Λιοντάρι<br>
-      <input type="radio" name="q3" value="σωστό"> Τσιτάχ<br>
-      <input type="radio" name="q3" value="λάθος"> Ελέφαντας<br>
-    </div>
-
-    <button type="button" onclick="checkAnswers()">Υποβολή ✅</button>
-  </form>
-
-  <div id="message"></div>
+  <div id="scrambleGame">
+    <p>Ανακάτεψε τα γράμματα για να φτιάξεις τη σωστή λέξη:</p>
+    <h2 id="scrambledWord">ΣΦΟΥΤΑ</h2>
+    <input type="text" id="userInput" placeholder="Γράψε τη λέξη εδώ">
+    <button onclick="checkWord()">Έλεγχος ✅</button>
+    <div id="message"></div>
+  </div>
 
   <!-- Popup Modal -->
   <div id="giftModal">
     <div id="giftContent">
       <h2>🎉 Συγχαρητήρια! 🎉</h2>
       <p>Κέρδισες την δωροεπιταγή! 🛍️</p>
-      <!-- Αντικατέστησε με τη δική σου εικόνα -->
       <img src="giftcard.jpg" alt="Δωροεπιταγή 🎁">
       <button id="closeBtn" onclick="closeModal()">Κλείσιμο</button>
     </div>
   </div>
 
-  <!-- Ήχος επιτυχίας -->
   <audio id="successSound" src="success.mp3" preload="auto"></audio>
 
   <script>
-    function checkAnswers() {
-      const q1 = document.querySelector('input[name="q1"]:checked');
-      const q2 = document.querySelector('input[name="q2"]:checked');
-      const q3 = document.querySelector('input[name="q3"]:checked');
+    const correctWord = "ΦΟΥΣΤΑ"; // σωστή λέξη
+
+    function checkWord() {
+      const userWord = document.getElementById("userInput").value.toUpperCase();
       const message = document.getElementById("message");
       const modal = document.getElementById("giftModal");
       const sound = document.getElementById("successSound");
 
-      if (!q1 || !q2 || !q3) {
-        alert("Συμπλήρωσε όλες τις απαντήσεις!");
-        return;
-      }
-
-      if (q1.value === "σωστό" && q2.value === "σωστό" && q3.value === "σωστό") {
-        // Παίζει ήχο επιτυχίας
+      if(userWord === correctWord){
         sound.play();
-        // Εμφάνιση popup
         modal.style.display = "flex";
         message.textContent = "";
       } else {
-        message.textContent = "😢 Κάποιες απαντήσεις είναι λάθος. Δοκίμασε ξανά!";
+        message.textContent = "😢 Λάθος! Δοκίμασε ξανά!";
       }
     }
 
@@ -187,10 +159,10 @@
       document.getElementById("giftModal").style.display = "none";
     }
 
-    // Κλείσιμο modal αν κάνουμε κλικ έξω από το περιεχόμενο
+    // Κλείσιμο modal αν κάνουμε κλικ έξω
     window.onclick = function(event) {
       const modal = document.getElementById("giftModal");
-      if (event.target === modal) {
+      if(event.target === modal){
         modal.style.display = "none";
       }
     }
